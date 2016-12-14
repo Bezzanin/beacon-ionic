@@ -1,8 +1,20 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope, GetUser) {
-  $scope.user = GetUser;
-})
+.controller('DashCtrl', [ '$scope', 'Profile', '$firebaseObject', '$state', function($scope, $firebaseObject, $state) {
+  
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      // User is signed in.
+      var currentUser = firebase.auth().currentUser;
+      var uid = currentUser.uid;
+      $scope.user = $firebaseObject(uid);
+  
+    } else {
+      // No user is signed in.
+    }
+  });
+
+}])
 
 .controller('ChatsCtrl', function($scope, Chats) {
   // With the new view caching in Ionic, Controllers are only called

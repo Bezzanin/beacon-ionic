@@ -13,21 +13,24 @@ angular.module('starter.services', [])
       }
     };
 })
-.factory('GetUser', function() {
-  var user = {
-    name: 'Shokhrukh Yakubov',
-    status: 'online',
-    department: 'IT support',
-    todoItems: [
-      {text: 'Check email', due: '20:00', isImportant: false},
-      {text: 'Visit CEO', due: '12.12.16', isImportant: true},
-      {text: 'Remove tests from the librrary', due: '12:30', isImportant: false},
-      {text: 'Test the environment for various mistakes related to  the content amount', due: '12:30', isImportant: false}
-    ]
-  }
-  return user;
 
-})
+.factory("Profile", ["$firebaseObject",
+  function($firebaseObject) {
+    return function(uid) {
+      // create a reference to the database node where we will store our data
+      var ref = firebase.database().ref("users");
+      var profileRef = ref.child(uid);
+
+      // return it as a synchronized object
+      return $firebaseObject(profileRef);
+    }
+  }
+])
+
+.factory('Auth', ['$firebaseAuth', 
+  function($firebaseAuth){
+    return $firebaseAuth();
+}])
 
 .factory('CheckDatabase', function() {
   var user = {}
